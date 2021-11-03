@@ -7,6 +7,28 @@ on:
     branches: [ master ]
 
 jobs:
+  bbuild:
+    name: bbuild
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.14.x
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Fetch dependencies
+        run: |
+          go get -v -t -d ./...
+
+      - name: Build
+        run: |
+          GOOS=darwin GOARCH=arm64 go build -v .
+          pwd
+
+        
   lint:
     name: Lint
     runs-on: ubuntu-latest
